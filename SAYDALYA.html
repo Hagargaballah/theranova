@@ -102,7 +102,72 @@
         .confirmation {
             margin-top: 20px;
         }
+            
+        .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        justify-content: space-evenly;
 
+        }
+
+        /* Modal content */
+        .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+        border-radius: 8px;
+        text-align: center;
+        }
+
+        /* Close button */
+        .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        }
+
+        .close:hover, .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+        }
+
+        /* Input styling */
+        .visa-input {
+        width: 100%;
+        padding: auto;
+        margin: auto;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        }
+
+        /* Submit button */
+        #submitPayment {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        margin: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        }
+
+        #submitPayment:hover {
+        background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -143,6 +208,30 @@
     <div class="confirmation">
         <button id="confirmOrderButton" onclick="confirmOrder()">تأكيد الطلب</button>
     </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>إدخال بيانات الدفع</h2>
+            <form id="paymentForm">
+                <label for="cardName">اسم حامل البطاقة:</label>
+                <input type="text" id="cardName" name="cardName" class="visa-input" placeholder="الاسم على البطاقة" required>
+                
+                <label for="cardNumber">رقم البطاقة:</label>
+                <input type="text" id="cardNumber" name="cardNumber" class="visa-input" placeholder="1234 5678 9012 3456" maxlength="16" required>
+                
+                <label for="expiryDate">تاريخ الانتهاء:</label>
+                <input type="text" id="expiryDate" name="expiryDate" class="visa-input" placeholder="MM/YY" maxlength="5" required>
+                
+                <label for="cvv">رمز الأمان (CVV):</label>
+                <input type="text" id="cvv" name="cvv" class="visa-input" placeholder="123" maxlength="3" required>
+                
+                <button type="button" id="submitPayment">تأكيد الدفع</button>
+            </form>
+        </div>
+    </div>
+
     
     <script>
         // قائمة المنتجات
@@ -197,42 +286,72 @@
             totalPrice.textContent = total;
         }
 
-        function confirmOrder() {
-            const paymentMethod = document.querySelector('input[name="payment"]:checked');
-            const totalPrice = document.getElementById("totalPrice");
-            if (totalPrice.textContent === "0")
-             {
-                alert(" يرجى اختيار المنتجات أولا");
-                return;
-            }
-            if (!paymentMethod) {
-                alert("يرجى اختيار طريقة الدفع");
-                return;
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('paymentModal');
+        const closeModal = document.querySelector('.close');
+        const submitPayment = document.getElementById('submitPayment');
 
-            const method = paymentMethod.value;
-            let confirmationMessage = `تم تأكيد طلبك.\nطريقة الدفع: ${method}\n`;
+    function confirmOrder() {
+        const paymentMethod = document.querySelector('input[name="payment"]:checked');
+        const totalPrice = document.getElementById("totalPrice");
 
-            // إضافة تفاصيل تأكيد الدفع حسب الطريقة المختارة
-            switch (method) {
-                case 'cash':
-                    confirmationMessage += "يرجى دفع المبلغ نقدًا عند الاستلام.";
-                    break;
-                case 'visa':
-                    confirmationMessage += "يرجى إدخال بيانات الفيزا الخاصة بك.";
-                    break;
-                case 'wallet':
-                    confirmationMessage += "يرجى التأكد من رصيد المحفظة الخاصة بك.";
-                    break;
-            }
-
-            alert(confirmationMessage);
-
-            // محاكاة وصول الطلب
-            setTimeout(() => {
-                alert("تم وصول الطلب! شكراً لك.");
-            }, 5000); // بعد 5 ثواني يتم إشعار العميل بوصول الطلب
+        if (totalPrice.textContent === "0") {
+            alert("يرجى اختيار المنتجات أولا");
+            return;
         }
+
+        if (!paymentMethod) {
+            alert("يرجى اختيار طريقة الدفع");
+            return;
+        }
+
+        const method = paymentMethod.value;
+
+        switch (method) {
+            case 'cash':
+                alert("تم تأكيد طلبك. يرجى دفع المبلغ نقدًا عند الاستلام.");
+                break;
+            // TODO: validate inputs
+            case 'visa':
+                // Open the modal for card details
+                modal.style.display = 'flex';
+                break;
+
+            case 'wallet':
+                alert("يرجى التأكد من رصيد المحفظة الخاصة بك.");
+                break;
+
+            default:
+                alert("يرجى اختيار طريقة دفع صحيحة.");
+                break;
+        }
+    }
+
+    // Close modal when clicking "x" or outside the modal
+    closeModal.onclick = () => { modal.style.display = 'none'; };
+    window.onclick = (event) => { if (event.target === modal) modal.style.display = 'none'; };
+
+    // Handle payment form submission
+    submitPayment.onclick = () => {
+        const cardName = document.getElementById('cardName').value;
+        const cardNumber = document.getElementById('cardNumber').value;
+        const expiryDate = document.getElementById('expiryDate').value;
+        const cvv = document.getElementById('cvv').value;
+
+        if (!cardName || !cardNumber || !expiryDate || !cvv) {
+            alert("يرجى ملء جميع الحقول المطلوبة.");
+            return;
+        }
+
+        // Simulate payment processing
+        alert("تم تأكيد الدفع بنجاح. شكراً لتعاملك معنا!");
+        modal.style.display = 'none';
+    };
+
+    // Attach confirmOrder function to your confirm button
+    document.getElementById('confirmOrderButton').addEventListener('click', confirmOrder);
+});
+
 
         // عرض المنتجات في الصفحة
         displayProducts(products);
