@@ -1,0 +1,183 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الخطوة 3 - تأكيد الطلب | تقييم الرحلة</title>
+    <link rel="stylesheet" href="WORKSHOP.css">
+    <style>
+        *{
+            padding: 0%;
+            margin: 0%;
+            box-sizing: border-box;
+        }
+        /* تنسيق الخريطة */
+        #map {
+            height: 400px;
+            width: 100%;
+            border: 2px solid #056060;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        /* تنسيق النص */
+        #trackingStatus {
+            font-size: 18px;
+            color: #056060;
+            margin-bottom: 20px;
+        }
+
+        /* تنسيق الأزرار */
+        button {
+            background-color: #056060;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #043d3d;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #056060;
+        }
+
+        main {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* تنسيق نموذج التقييم */
+        #ratingSection {
+            display: none; /* إخفاء قسم التقييم أولاً */
+            margin-top: 30px;
+        }
+
+        .rating {
+            direction: rtl; /* يجعل النجوم من اليمين لليسار */
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .rating input:checked ~ label {
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TheraNova</h1>
+    </header>
+    
+    <main>
+        <h2>الخطوة 3: تأكيد الطلب ومتابعته | Step 3: Confirm and Track Order</h2>
+        <p id="trackingStatus">جاري إرسال الإسعاف إليك... | Ambulance is on the way...</p>
+        
+        <!-- الخريطة هنا -->
+        <div id="map"></div>
+        
+        <button onclick="cancelOrder()">إلغاء الطلب | Cancel Order</button>
+
+        <!-- قسم التقييم بعد انتهاء الرحلة -->
+        <div id="ratingSection">
+            <h3>يرجى تقييم رحلتك | Please rate your trip:</h3>
+            <div class="rating">
+                <input type="radio" id="star5" name="rating" value="5">
+                <label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1">★</label>
+            </div>
+            <br>
+            <textarea id="comments" placeholder="أضف تعليقاتك هنا... | Add your comments here..." rows="4" cols="50"></textarea><br>
+            <button onclick="submitRating()">إرسال التقييم | Submit Rating</button>
+        </div>
+    </main>
+
+    <script>
+        let map;
+        let marker;
+        let carPosition = { lat: 30.0444, lng: 31.2357 }; // إحداثيات القاهرة كمثال
+        const startPosition = { lat: 30.0444, lng: 31.2357 }; // موقع البداية
+
+        // إعداد الخريطة
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 14,
+                center: startPosition,
+            });
+
+            marker = new google.maps.Marker({
+                position: carPosition,
+                map: map,
+                title: "العربية في الطريق"  // عنوان المؤشر
+            });
+
+            // محاكاة حركة العربية على الخريطة
+            moveCar();
+        }
+
+        // تحريك السيارة على الخريطة
+        function moveCar() {
+            let newPosition = { lat: 30.0454, lng: 31.2400 }; // تغيير الإحداثيات تدريجيًا كمثال
+
+            marker.setPosition(newPosition);  // تحديث الموقع الجديد
+            map.panTo(newPosition);  // تحريك الخريطة للموقع الجديد
+
+            carPosition = newPosition;  // تحديث إحداثيات السيارة
+
+            setTimeout(moveCar, 3000);  // تحديث الموقع كل 3 ثواني
+        }
+
+        // وظيفة إلغاء الطلب
+        function cancelOrder() {
+            document.getElementById("trackingStatus").textContent = "تم إلغاء الطلب | Order canceled";
+        }
+
+        // محاكاة انتهاء الرحلة
+        setTimeout(function() {
+            document.getElementById("trackingStatus").textContent = "تم وصول الإسعاف | Ambulance has arrived";
+            document.getElementById("ratingSection").style.display = "block";  // عرض نموذج التقييم
+        }, 240000);  // بعد 15 ثانية، يتم عرض نموذج التقييم
+
+        // إرسال التقييم
+        function submitRating() {
+            const rating = document.querySelector('input[name="rating"]:checked');
+            const comments = document.getElementById("comments").value;
+
+            if (rating) {
+                alert(`تم إرسال تقييمك! | Your rating has been submitted: ${rating.value} stars`);
+                console.log(`Rating: ${rating.value}, Comments: ${comments}`);
+                // هنا يمكن إرسال البيانات إلى السيرفر باستخدام AJAX أو أي طريقة أخرى
+            } else {
+                alert("يرجى اختيار تقييم | Please select a rating");
+            }
+        }
+    </script>
+
+    <!-- إضافة مفتاح Google Maps API هنا -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>

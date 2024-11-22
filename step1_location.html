@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الخطوة 1 - تحديد الموقع</title>
+    <link rel="stylesheet" href="WORKSHOP.css">
+</head>
+<body>
+    <header>
+        <h1>TheraNova</h1>
+    </header>
+    
+    <main>
+        <h2>الخطوة 1: تحديد الموقع | Step 1: Determine Location</h2>
+        <button onclick="getLocation()">تحديد موقعي | Get My Location</button>
+        <p id="locationStatus"></p>
+
+        <a href="step2_hospital.html"><button>التالي | Next</button></a>
+    </main>
+
+    <script>
+        function getLocation() {
+            const status = document.getElementById("locationStatus");
+            if (navigator.geolocation) {
+                status.textContent = "جاري تحديد الموقع... | Locating...";
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                status.textContent = "خاصية تحديد الموقع غير مدعومة في هذا المتصفح | Geolocation is not supported by this browser.";
+            }
+
+            function showPosition(position) {
+                status.textContent = `تم تحديد الموقع: (${position.coords.latitude}, ${position.coords.longitude}) | Location detected.`;
+            }
+
+            function showError(error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        status.textContent = "رفض المستخدم السماح بتحديد الموقع | User denied the request for Geolocation.";
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        status.textContent = "معلومات الموقع غير متوفرة | Location information is unavailable.";
+                        break;
+                    case error.TIMEOUT:
+                        status.textContent = "انتهت مهلة طلب تحديد الموقع | The request to get user location timed out.";
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        status.textContent = "حدث خطأ غير معروف | An unknown error occurred.";
+                        break;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرئيسية - Thiranova</title>
+    <link rel="stylesheet" href="WORKSHOP.css">
+    <style>
+        /* تنسيق الجسم العام للصفحة */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #056060, #3b9d9d); /* تدرج لوني للخلفية */
+            color: white;
+        }
+
+        /* الهيدر */
+        header {
+            text-align: center;
+            padding: 50px;
+            background: #2c6e6e;
+            border-bottom: 5px solid #056060;
+        }
+
+        header img.logo {
+            width: 200px;
+            height: auto;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        header p {
+            font-size: 20px;
+            font-weight: lighter;
+            margin-top: 10px;
+        }
+
+        /* تنسيق القسم الخاص بالخدمات */
+        main {
+            padding: 30px;
+        }
+
+        .services {
+            display: flex;
+            flex-wrap: wrap; /* لجعل العناصر تتنقل بشكل مرن */
+            justify-content: space-evenly;
+            gap: 30px;
+            margin-top: 20px;
+            background-color: #004747;
+        }
+
+        .service {
+            background: rgba(255, 255, 255, 0.15); /* خلفية شفافة مع تدرج خفيف */
+            border-radius: 15px;
+            width: 250px; /* تحديد العرض بشكل ثابت */
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        .service:hover {
+            transform: translateY(-10px); /* حركة خفيفة عند المرور */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .service img {
+            width: 80%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .service img:hover {
+            transform: scale(1.05); /* تكبير الصورة عند المرور عليها */
+        }
+
+        .service h2 {
+            font-size: 22px;
+            margin: 15px 0;
+            color: #ffffff;
+        }
+
+        .service p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #d1e1e1;
+        }
+
+        /* إضافة التنسيق للمؤثرات */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 28px;
+            }
+
+            header p {
+                font-size: 18px;
+            }
+
+            .services {
+                flex-direction: column; /* جعل العناصر تتكدس فوق بعضها في الشاشات الصغيرة */
+                align-items: center;
+            }
+        }
+
+        /* تحسين الفوتر */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c6e6e;
+            margin-top: 30px;
+            font-size: 14px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <header>
+        <img src="./images/WhatsApp Image 2024-08-18 at 10.11.54 PM (1).jpeg" alt="شعار ثيرانوفا" class="logo">
+        <h1>ثيرانوفا</h1>
+        <p>صحتك أولويتنا</p>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+        <section class="services">
+            <!-- خدمة الإسعاف السريع -->
+            <div class="service">
+                <a href="ambulance.html">
+                    <img src="images/Ambulance-Car-Van.jpg" alt="إسعاف سريع">
+                    <h2>إسعاف سريع</h2>
+                    <p>احصل على أقرب سيارة إسعاف بسرعة</p>
+                </a>
+            </div>
+
+            <!-- خدمة الاستشارات الطبية -->
+            <div class="service">
+                <a href="consultation.html">
+                    <img src="icons/consultation.png" alt="استشارات طبية">
+                    <h2>استشارات طبية</h2>
+                    <p>احجز موعدك مع أفضل الأطباء</p>
+                </a>
+            </div>
+
+            <!-- خدمة الصيدلية -->
+            <div class="service">
+                <a href="SAYDALYA.html
+                ">
+                    <img src="icons/pharmacy.png" alt="صيدلية">
+                    <h2>صيدلية</h2>
+                    <p>اطلب أدويتك ووصلها لباب بيتك</p>
+                </a>
+            </div>
+
+            <!-- خدمة تتبع الدورة الشهرية -->
+            <div class="service">
+                <a href="cycle_tracker.html">
+                    <img src="icons/cycle_tracker.png" alt="تتبع الدورة الشهرية">
+                    <h2>تتبع الدورة الشهرية</h2>
+                    <p>تابع دورتك الشهرية بسهولة</p>
+                </a>
+            </div>
+
+            <!-- خدمة رعاية الحيوانات الأليفة -->
+            <div class="service">
+                <a href="pet_care.html">
+                    <img src="icons/pet_care.png" alt="رعاية الحيوانات الأليفة">
+                    <h2>رعاية الحيوانات الأليفة</h2>
+                    <p>خدمات طبية لحيواناتك الأليفة</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- الفوتر -->
+    <footer>
+        <p>© 2024 Thiranova. جميع الحقوق محفوظة.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الدفع</title>
+</head>
+<body>
+    <h1>صفحة الدفع</h1>
+
+    <form id="paymentForm">
+        <label for="paymentMethod">طريقة الدفع:</label>
+        <select id="paymentMethod" name="paymentMethod" required>
+            <option value="visa">Visa</option>
+            <option value="mastercard">MasterCard</option>
+            <option value="cash">الدفع نقدًا</option>
+        </select>
+
+        <label for="amount">المبلغ:</label>
+        <input type="number" id="amount" name="amount" required placeholder="اكتب المبلغ هنا">
+
+        <button type="button" id="confirmButton">تأكيد الطلب</button>
+    </form>
+
+    <div id="message"></div>
+
+    <!-- ربط ملف JavaScript -->
+    <script src="payment.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصيدلية - تسوق المنتجات</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            background-color: #056060;
+            color: white;
+            padding: 20px;
+        }
+
+        .search-bar {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .search-bar input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #056060;
+            border-radius: 8px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .product-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-item h3 {
+            font-size: 18px;
+            color: #056060;
+            margin: 10px 0 5px;
+        }
+
+        .product-item p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .product-item button {
+            background-color: #056060;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .product-item button:hover {
+            background-color: #044747;
+        }
+
+        .cart {
+            margin-top: 20px;
+            text-align: center;
+            padding: 20px;
+            background-color: #ddd;
+        }
+
+        .cart h2 {
+            margin-bottom: 15px;
+        }
+
+        .payment-methods {
+            margin-top: 20px;
+        }
+
+        .payment-methods label {
+            margin-right: 10px;
+        }
+
+        .confirmation {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <header>
+        <h1>صيدلية - تسوق المنتجات</h1>
+        <p>ابحث عن منتجاتك وأضفها إلى السلة</p>
+    </header>
+
+    <!-- شريط البحث -->
+    <div class="search-bar">
+        <input type="text" id="productSearch" placeholder="ابحث عن المنتج..." oninput="filterProducts()">
+    </div>
+
+    <!-- قائمة المنتجات -->
+    <div class="product-list" id="productList">
+        <!-- سيتم ملء المنتجات بواسطة JavaScript -->
+    </div>
+
+    <!-- السلة -->
+    <div class="cart" id="cart">
+        <h2>السلة:</h2>
+        <ul id="cartItems"></ul>
+        <p>إجمالي السعر: <span id="totalPrice">0</span> جنيه</p>
+    </div>
+
+    <!-- طرق الدفع -->
+    <div class="payment-methods">
+        <h3>اختر طريقة الدفع:</h3>
+        <label><input type="radio" name="payment" value="cash"> دفع كاش</label>
+        <label><input type="radio" name="payment" value="visa"> فيزا</label>
+        <label><input type="radio" name="payment" value="wallet"> محفظة</label>
+    </div>
+
+
+    <!-- تأكيد الطلب -->
+    <div class="confirmation">
+        <button id="confirmOrderButton">تأكيد الطلب</button>
+    </div>
+    
+    <script>
+        // قائمة المنتجات
+        const products = [
+            { name: "Paracetamol / باراسيتامول", price: 20, image: "images/paracetamol.jpg", description: "مسكن للآلام وخافض للحرارة." },
+            { name: "Panadol / بانادول", price: 25, image: "images/panadol.jpg", description: "يستخدم لتخفيف الألم والحمى." },
+            { name: "Amoxicillin / أموكسيسيلين", price: 30, image: "images/amoxicillin.jpg", description: "مضاد حيوي يعالج العدوى البكتيرية." },
+            // أضف بقية المنتجات هنا...
+        ];
+
+        let cart = [];
+
+        function filterProducts() {
+            const searchValue = document.getElementById("productSearch").value.toLowerCase();
+            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchValue));
+            displayProducts(filteredProducts);
+        }
+
+        function displayProducts(products) {
+            const productList = document.getElementById("productList");
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const productItem = document.createElement("div");
+                productItem.className = "product-item";
+                productItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p>${product.price} جنيه</p>
+                    <button onclick="addToCart('${product.name}', ${product.price})">أضف إلى السلة</button>
+                `;
+                productList.appendChild(productItem);
+            });
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById("cartItems");
+            const totalPrice = document.getElementById("totalPrice");
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${item.name} - ${item.price} جنيه`;
+                cartItems.appendChild(listItem);
+                total += item.price;
+            });
+            totalPrice.textContent = total;
+        }
+
+        function confirmOrder() {
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            if (!paymentMethod) {
+                alert("يرجى اختيار طريقة الدفع");
+                return;
+            }
+
+            const method = paymentMethod.value;
+            let confirmationMessage = `تم تأكيد طلبك.\nطريقة الدفع: ${method}\n`;
+
+            // إضافة تفاصيل تأكيد الدفع حسب الطريقة المختارة
+            switch (method) {
+                case 'cash':
+                    confirmationMessage += "يرجى دفع المبلغ نقدًا عند الاستلام.";
+                    break;
+                case 'visa':
+                    confirmationMessage += "يرجى إدخال بيانات الفيزا الخاصة بك.";
+                    break;
+                case 'wallet':
+                    confirmationMessage += "يرجى التأكد من رصيد المحفظة الخاصة بك.";
+                    break;
+            }
+
+            alert(confirmationMessage);
+
+            // محاكاة وصول الطلب
+            setTimeout(() => {
+                alert("تم وصول الطلب! شكراً لك.");
+            }, 5000); // بعد 5 ثواني يتم إشعار العميل بوصول الطلب
+        }
+
+        // عرض المنتجات في الصفحة
+        displayProducts(products);
+    </script>
+</body>
+</html>

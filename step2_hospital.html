@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الخطوة 2 - اختيار المستشفى</title>
+    <link rel="stylesheet" href="WORKSHOP.css">
+    <style>
+        /* الرسالة المخفية */
+        #warningMessage {
+            display: none;
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TheraNova</h1>
+    </header>
+    
+    <main>
+        <h2>الخطوة 2: اختيار المستشفى والسعر | Step 2: Select Hospital and Price</h2>
+        <p>أقرب مستشفى والسعر بناءً على موقعك:</p>
+        <div id="hospitalInfo">المستشفى الأقرب: <span id="hospitalName"></span> <br> السعر المتوقع: <span id="currentPrice">150</span> جنيه | Estimated Price: 150 EGP</div>
+        <label for="price">تعديل السعر: | Edit Price:</label>
+        <input type="number" id="price" step="10" min="50">
+        <div id="warningMessage">السعر المدخل أقل من الحد المسموح به! الرجاء إدخال سعر أعلى.</div>
+        <button id="nextButton">التالي | Next</button>
+    </main>
+
+    <script>
+        // إعدادات المستشفى والسعر
+        document.getElementById("hospitalName").textContent = "مستشفى الهرم - الجيزة | Al-Haram Hospital - Giza";
+        document.getElementById("currentPrice").textContent = 150;
+        
+        // الحصول على الزر والـ input
+        const priceInput = document.getElementById("price");
+        const nextButton = document.getElementById("nextButton");
+        const warningMessage = document.getElementById("warningMessage");
+
+        // إضافة حدث عند الضغط على زر "التالي"
+        nextButton.addEventListener("click", function(event) {
+            const enteredPrice = parseInt(priceInput.value);
+            const currentPrice = 150;
+            
+            // التحقق إذا كان السعر المدخل أقل من 135 جنيه (150 - 15)
+            if (enteredPrice < currentPrice - 15) {
+                // إذا كان السعر أقل من المسموح، إظهار الرسالة ومنع الانتقال للصفحة التالية
+                warningMessage.style.display = "block"; // إظهار الرسالة
+                event.preventDefault();  // منع الانتقال للصفحة التالية
+            } else {
+                // إذا كان السعر صحيحًا، إخفاء الرسالة والانتقال للصفحة
+                warningMessage.style.display = "none"; // إخفاء الرسالة
+                window.location.href = "step3_confirmation.html"; // الانتقال للصفحة التالية
+            }
+        });
+
+        // إضافة حدث عند تغيير السعر
+        priceInput.addEventListener("input", function() {
+            const enteredPrice = parseInt(priceInput.value);
+            const currentPrice = 150;
+            
+           
+            if (enteredPrice < currentPrice - 15) {
+                
+                warningMessage.style.display = "block"; 
+                nextButton.disabled = true;  
+                
+            } else {
+                // إذا كان السعر صحيحًا، إخفاء الرسالة وتمكين الزر
+                warningMessage.style.display = "none"; // إخفاء الرسالة
+                nextButton.disabled = false;  // تفعيل الزر
+            }
+        });
+    </script>
+</body>
+</html>
