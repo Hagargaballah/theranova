@@ -133,15 +133,15 @@
     <!-- طرق الدفع -->
     <div class="payment-methods">
         <h3>اختر طريقة الدفع:</h3>
-        <label><input type="radio" name="payment" value="cash"> دفع كاش</label>
-        <label><input type="radio" name="payment" value="visa"> فيزا</label>
-        <label><input type="radio" name="payment" value="wallet"> محفظة</label>
+        <label><input type="radio" name="payment" value="cash"> Cash</label>
+        <label><input type="radio" name="payment" value="visa"> Visa </label>
+        <label><input type="radio" name="payment" value="wallet"> Wallet</label>
     </div>
 
 
     <!-- تأكيد الطلب -->
     <div class="confirmation">
-        <button id="confirmOrderButton">تأكيد الطلب</button>
+        <button id="confirmOrderButton" onclick="confirmOrder()">تأكيد الطلب</button>
     </div>
     
     <script>
@@ -199,6 +199,12 @@
 
         function confirmOrder() {
             const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            const totalPrice = document.getElementById("totalPrice");
+            if (totalPrice.textContent === "0")
+             {
+                alert(" يرجى اختيار المنتجات أولا");
+                return;
+            }
             if (!paymentMethod) {
                 alert("يرجى اختيار طريقة الدفع");
                 return;
