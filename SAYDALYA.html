@@ -155,7 +155,7 @@
         }
 
         /* Submit button */
-        #submitPayment {
+        .submitPayment {
         background-color: #4CAF50;
         color: white;
         padding: 10px 15px;
@@ -165,7 +165,7 @@
         cursor: pointer;
         }
 
-        #submitPayment:hover {
+        .submitPayment:hover {
         background-color: #45a049;
         }
     </style>
@@ -214,20 +214,26 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>إدخال بيانات الدفع</h2>
-            <form id="paymentForm">
+            <form id="visaPaymentForm" style="display: none">
                 <label for="cardName">اسم حامل البطاقة:</label>
                 <input type="text" id="cardName" name="cardName" class="visa-input" placeholder="الاسم على البطاقة" required>
                 
                 <label for="cardNumber">رقم البطاقة:</label>
-                <input type="text" id="cardNumber" name="cardNumber" class="visa-input" placeholder="1234 5678 9012 3456" maxlength="16" required>
+                <input type="number" id="cardNumber" name="cardNumber" class="visa-input" placeholder="1234 5678 9012 3456" maxlength="16" required>
                 
                 <label for="expiryDate">تاريخ الانتهاء:</label>
                 <input type="text" id="expiryDate" name="expiryDate" class="visa-input" placeholder="MM/YY" maxlength="5" required>
                 
                 <label for="cvv">رمز الأمان (CVV):</label>
-                <input type="text" id="cvv" name="cvv" class="visa-input" placeholder="123" maxlength="3" required>
+                <input type="number" id="cvv" name="cvv" class="visa-input" placeholder="123" maxlength="3" required>
                 
-                <button type="button" id="submitPayment">تأكيد الدفع</button>
+                <button type="button" class="submitPayment" onclick="closePaymentModal()" >تأكيد الدفع</button>
+            </form>
+             <form id="walletPaymentForm" style="display: none">
+                <label for="cardName"> Phone Number</label>
+                <input type="number" id="cardName" name="cardName" class="visa-input" placeholder="01xxxxxxxxx" required>
+                
+                <button type="button" class="submitPayment" onclick="closePaymentModal()">Confirm</button>
             </form>
         </div>
     </div>
@@ -248,6 +254,11 @@
             const searchValue = document.getElementById("productSearch").value.toLowerCase();
             const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchValue));
             displayProducts(filteredProducts);
+        }
+
+        function closePaymentModal() {
+                 const modal = document.getElementById('paymentModal');
+           modal.style.display = 'none'; 
         }
 
         function displayProducts(products) {
@@ -289,7 +300,9 @@
     document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('paymentModal');
         const closeModal = document.querySelector('.close');
-        const submitPayment = document.getElementById('submitPayment');
+        const submitPayment = document.getElementsByClassName('submitPayment');
+        const visaForm = document.getElementById('visaPaymentForm');
+        const walletForm = document.getElementById('walletPaymentForm');
 
     function confirmOrder() {
         const paymentMethod = document.querySelector('input[name="payment"]:checked');
@@ -315,10 +328,14 @@
             case 'visa':
                 // Open the modal for card details
                 modal.style.display = 'flex';
+                walletForm.style.display = 'none';
+                visaForm.style.display = 'block';
                 break;
 
             case 'wallet':
-                alert("يرجى التأكد من رصيد المحفظة الخاصة بك.");
+                modal.style.display = 'flex';
+                visaForm.style.display = 'none';
+                walletForm.style.display = 'block';
                 break;
 
             default:
