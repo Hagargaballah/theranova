@@ -1,0 +1,29 @@
+{
+  "name": "theranova",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "npm run dev",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hagargaballah/theranova.git"
+  },
+  "author": "Hagar Karam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hagargaballah/theranova/issues"
+  },
+  "homepage": "https://github.com/Hagargaballah/theranova#readme",
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "express": "^4.21.1",
+    "node-fetch": "^3.3.2",
+    "papaparse": "^5.4.1"
+  },
+  
+  "keywords": []
+}

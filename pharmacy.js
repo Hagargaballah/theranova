@@ -1,13 +1,7 @@
-// import { getMedicines } from './getProducts.mjs';
+import { getMedicines } from './getProducts.js';
 
 document.addEventListener('DOMContentLoaded', async function () {
-    // const products = await getMedicines();
-    const products = [
-            { name: "Paracetamol / باراسيتامول", price: 20, description: "مسكن للآلام وخافض للحرارة." },
-            { name: "Panadol / بانادول", price: 25, description: "يستخدم لتخفيف الألم والحمى." },
-            { name: "Amoxicillin / أموكسيسيلين", price: 30, description: "مضاد حيوي يعالج العدوى البكتيرية." },
-            // أضف بقية المنتجات هنا...
-        ];
+    const products = await getMedicines();
     console.log("Medicines fetched: ", products);
 
     let cart = [];
