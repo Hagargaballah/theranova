@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصيدلية - تسوق المنتجات</title>
+    <style>
+        /* تنسيق الجسم */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #056060, #2a6666);
+            color: #ffffff;
+        }
+
+        /* الهيدر */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: #2a6666;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            border-bottom: 5px solid #056060;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        /* شريط البحث */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background: #004c4c;
+            box-shadow: 0 4px 8px rgba(0, 100, 100, 0.2);
+        }
+
+        .search-bar input {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+            border: 2px solid #056060;
+            border-radius: 30px;
+            font-size: 16px;
+        }
+
+        /* قائمة المنتجات */
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product-list .product-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            text-align: center;
+            padding: 15px;
+            box-shadow: 0 8px 16px rgba(0, 100, 100, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-list .product-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 100, 100, 0.3);
+        }
+
+        .product-list img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .product-list h3 {
+            font-size: 18px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .product-list p {
+            font-size: 14px;
+            color: #d1e1e1;
+            margin-bottom: 10px;
+        }
+
+        .product-list button {
+            background: #056060;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .product-list button:hover {
+            background: #2a6666;
+        }
+
+        /* السلة */
+        .cart {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px;
+            box-shadow: 0 8px 16px rgba(0, 100, 100, 0.2);
+        }
+
+        .cart h2 {
+            font-size: 22px;
+            color: #056060;
+        }
+
+        .cart ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart ul li {
+            padding: 5px 0;
+            color: #ffffff;
+        }
+
+        .cart p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* طرق الدفع */
+        .payment-methods {
+            text-align: center;
+            padding: 20px;
+            background: #004c4c;
+            margin: 20px;
+            border-radius: 15px;
+        }
+
+        .payment-methods h3 {
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .payment-methods label {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 16px;
+            color: #d1e1e1;
+        }
+
+        .payment-methods input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        /* زر تأكيد الطلب */
+        .confirmation button {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background: #056060;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .confirmation button:hover {
+            background: #2a6666;
+            transform: scale(1.1);
+        }
+
+        /* المودال */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #004c4c;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 100, 100, 0.3);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-content {
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .modal-content label {
+            font-size: 16px;
+            color: #d1e1e1;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #056060;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content .submitPayment {
+            background: #056060;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-content .submitPayment:hover {
+            background: #2a6666;
+        }
+
+        .modal .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header>
+        <h1>صيدلية - تسوق المنتجات</h1>
+        <p>ابحث عن منتجاتك وأضفها إلى السلة</p>
+    </header>
+
+    <!-- شريط البحث -->
+    <div class="search-bar">
+        <input type="text" id="productSearch" placeholder="ابحث عن المنتج..." oninput="filterProducts()">
+    </div>
+
+    <!-- قائمة المنتجات -->
+    <div class="product-list" id="productList"></div>
+
+    <!-- السلة -->
+    <div class="cart" id="cart">
+        <h2>السلة:</h2>
+        <ul id="cartItems"></ul>
+        <p>إجمالي السعر: <span id="totalPrice">0</span> جنيه</p>
+    </div>
+
+    <!-- طرق الدفع -->
+    <div class="payment-methods">
+        <h3>اختر طريقة الدفع:</h3>
+        <label><input type="radio" name="payment" value="cash"> Cash</label>
+        <label><input type="radio" name="payment" value="visa"> Visa </label>
+        <label><input type="radio" name="payment" value="wallet"> Wallet</label>
+    </div>
+
+    <!-- تأكيد الطلب -->
+    <div class="confirmation">
+        <button id="confirmOrderButton">تأكيد الطلب</button>
+    </div>
+
+    <!-- المودال -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>إدخال بيانات الدفع</h2>
+            <form id="visaPaymentForm" style="display: none">
+                   <label for="cardName">اسم حامل البطاقة:</label>
+                <input type="text" id="cardName" name="cardName" class="visa-input" placeholder="الاسم على البطاقة" required>
+                
+                <label for="cardNumber">رقم البطاقة:</label>
+                <input type="number" id="cardNumber" name="cardNumber" class="visa-input" placeholder="1234 5678 9012 3456" maxlength="16" required>
+                
+                <label for="expiryDate">تاريخ الانتهاء:</label>
+                <input type="text" id="expiryDate" name="expiryDate" class="visa-input" placeholder="MM/YY" maxlength="5" required>
+                
+                <label for="cvv">رمز الأمان (CVV):</label>
+                <input type="number" id="cvv" name="cvv" class="visa-input" placeholder="123" maxlength="3" required>
+                
+                <button type="button" class="submitPayment" id="submit-visa-payment" >تأكيد الدفع</button>
+            </form>
+            <form id="walletPaymentForm" style="display: none">
+                  <label for="cardName"> Phone Number</label>
+                <input type="number" id="walletPhoneNumber" name="walletPhoneNumber" class="visa-input" placeholder="01xxxxxxxxx" required>
+                
+                <button type="button" class="submitPayment" id="submit-wallet-payment">Confirm</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="pharmacy.js"></script>
+</body>
+</html>
