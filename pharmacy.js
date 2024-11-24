@@ -70,9 +70,9 @@ function parseCSV(csvText) {
     productItem.innerHTML = `
       <img src="${product.image}" alt="${product.name}">
       <h3>${product.name}</h3>
+      <h4> Price: ${product.price} EGP</h4>
       <p> <strong>Uses:</strong> ${product.uses}</p>
       <p> Composition: ${product.composition}</p>
-      <p> Price: ${product.price} جنيه</p>
       <p> Manufacturer: ${product.manufacturer}</p>
       <button class="add-to-cart">أضف إلى السلة</button>
     `;
