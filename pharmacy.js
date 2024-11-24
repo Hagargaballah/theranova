@@ -1,7 +1,6 @@
-import { getMedicines } from './getProducts.js';
 
 document.addEventListener('DOMContentLoaded', async function () {
-    const products = await getMedicines();
+     const products = []
     console.log("Medicines fetched: ", products);
 
     let cart = [];
@@ -38,26 +37,67 @@ document.addEventListener('DOMContentLoaded', async function () {
             modal.style.display = 'none';
             alert("تم تأكيد الدفع بنجاح. شكراً لتعاملك معنا!");
         }
+
+        // Function to parse CSV into an array of objects
+function parseCSV(csvText) {
+  const rows = csvText.trim().split("\n");
+  const headers = rows[0].split(",");
+  
+  return rows.slice(1).map(row => {
+    const values = row.split(",");
+    return headers.reduce((obj, header, index) => {
+      obj[header.trim()] = values[index].trim();
+      return obj;
+    }, {});
+  });
+}
+
+//     function displayProducts(products) {
+//         const productList = document.getElementById("productList");
+//         productList.innerHTML = '';
+//         products.forEach(product => {
+//             const productItem = document.createElement("div");
+//             productItem.className = "product-item";
+//           productItem.innerHTML = `
+//     <h3>${product.name}</h3>
+//     <p>${product.description}</p>
+//     <p>${product.price} جنيه</p>
+//     <button class="add-to-cart">أضف إلى السلة</button>
+// `;
+
+// // Attach an event listener to the button
+// const button = productItem.querySelector(".add-to-cart");
+// button.addEventListener("click", () => addToCart(product.name, product.price));
+
+//             productList.appendChild(productItem);
+//         });
+//     }
     function displayProducts(products) {
-        const productList = document.getElementById("productList");
-        productList.innerHTML = '';
-        products.forEach(product => {
-            const productItem = document.createElement("div");
-            productItem.className = "product-item";
-          productItem.innerHTML = `
-    <h3>${product.name}</h3>
-    <p>${product.description}</p>
-    <p>${product.price} جنيه</p>
-    <button class="add-to-cart">أضف إلى السلة</button>
-`;
+  const productList = document.getElementById("productList");
+  productList.innerHTML = '';
+  
+  products.forEach(product => {
+    const productItem = document.createElement("div");
+    productItem.className = "product-item";
+    productItem.innerHTML = `
+      <h3>${product.name}</h3>
+      <p>${product.description}</p>
+      <p>${product.price} جنيه</p>
+      <button class="add-to-cart">أضف إلى السلة</button>
+    `;
+    productList.appendChild(productItem);
+  });
+}
 
-// Attach an event listener to the button
-const button = productItem.querySelector(".add-to-cart");
-button.addEventListener("click", () => addToCart(product.name, product.price));
-
-            productList.appendChild(productItem);
-        });
-    }
+    // Fetch and load the CSV file
+fetch('products.csv')
+  .then(response => response.text())
+  .then(csvText => {
+    const products = parseCSV(csvText);
+    console.log("============>",products[0])
+    displayProducts(products);
+  })
+  .catch(error => console.error("Error loading the CSV file:", error));
 
     function addToCart(name, price) {
         cart.push({ name, price });
