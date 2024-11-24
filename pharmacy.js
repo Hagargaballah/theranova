@@ -4,13 +4,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log("Medicines fetched: ", products);
 
     let cart = [];
-
-    function filterProducts() {
-        const searchValue = document.getElementById("productSearch").value.toLowerCase();
-        const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchValue));
-        displayProducts(filteredProducts);
-    }
-
     function submitVisaPayment() {
           const cardName = document.getElementById('cardName').value;
         const cardNumber = document.getElementById('cardNumber').value;
@@ -81,6 +74,14 @@ function parseCSV(csvText) {
     button.addEventListener("click", () => addToCart(product.name, product.price));
     productList.appendChild(productItem);
   });
+
+   const inputSearch = document.getElementById('productSearch');
+    inputSearch.oninput = () => { filterProducts(); };
+    function filterProducts() {
+        const searchValue = document.getElementById("productSearch").value.toLowerCase();
+        const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchValue)); // Filter products
+              displayProducts(filteredProducts);
+          }
 }
 
     // Fetch and load the CSV file
