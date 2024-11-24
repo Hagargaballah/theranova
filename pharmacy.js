@@ -42,36 +42,24 @@ document.addEventListener('DOMContentLoaded', async function () {
 function parseCSV(csvText) {
   const rows = csvText.trim().split("\n");
   const headers = rows[0].split(",");
-  
+
   return rows.slice(1).map(row => {
     const values = row.split(",");
+    const regex = /"([^"]+)"/;
+    const match = row.match(regex);  // Match the first occurrence of content inside double quotes
+  // If a match is found, return the captured group (the URL)
+    const imageValue = match ? match[1] : null;
     return headers.reduce((obj, header, index) => {
+       if ( header.trim() == "image") {
+            obj[header.trim()] = imageValue;
+       }
+       else {
       obj[header.trim()] = values[index].trim();
+       }
       return obj;
     }, {});
   });
 }
-
-//     function displayProducts(products) {
-//         const productList = document.getElementById("productList");
-//         productList.innerHTML = '';
-//         products.forEach(product => {
-//             const productItem = document.createElement("div");
-//             productItem.className = "product-item";
-//           productItem.innerHTML = `
-//     <h3>${product.name}</h3>
-//     <p>${product.description}</p>
-//     <p>${product.price} جنيه</p>
-//     <button class="add-to-cart">أضف إلى السلة</button>
-// `;
-
-// // Attach an event listener to the button
-// const button = productItem.querySelector(".add-to-cart");
-// button.addEventListener("click", () => addToCart(product.name, product.price));
-
-//             productList.appendChild(productItem);
-//         });
-//     }
     function displayProducts(products) {
   const productList = document.getElementById("productList");
   productList.innerHTML = '';
@@ -80,21 +68,26 @@ function parseCSV(csvText) {
     const productItem = document.createElement("div");
     productItem.className = "product-item";
     productItem.innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
       <h3>${product.name}</h3>
-      <p>${product.description}</p>
-      <p>${product.price} جنيه</p>
+      <p> <strong>Uses:</strong> ${product.uses}</p>
+      <p> Composition: ${product.composition}</p>
+      <p> Price: ${product.price} جنيه</p>
+      <p> Manufacturer: ${product.manufacturer}</p>
       <button class="add-to-cart">أضف إلى السلة</button>
     `;
+        // // Attach an event listener to the button
+    const button = productItem.querySelector(".add-to-cart");
+    button.addEventListener("click", () => addToCart(product.name, product.price));
     productList.appendChild(productItem);
   });
 }
 
     // Fetch and load the CSV file
-fetch('products.csv')
+fetch('/data/medicines.csv')
   .then(response => response.text())
   .then(csvText => {
     const products = parseCSV(csvText);
-    console.log("============>",products[0])
     displayProducts(products);
   })
   .catch(error => console.error("Error loading the CSV file:", error));
