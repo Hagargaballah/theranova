@@ -107,7 +107,7 @@ fetch('/data/medicines.csv')
             const listItem = document.createElement("li");
             listItem.textContent = `${item.name} - ${item.price} جنيه`;
             cartItems.appendChild(listItem);
-            total += item.price;
+            total += Number(item.price);
         });
         totalPrice.textContent = total;
     }
